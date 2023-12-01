@@ -5,8 +5,10 @@ import { Pressable, useColorScheme } from 'react-native';
 export default function Layout() {
 
     return (
-     <Stack screenOptions={{headerShown:false}}/>
-    
+     <Stack>
+        <Stack.Screen name="SignIn"  options={{ headerShown: true }}  />
+     </Stack>
     )
+
 
 }
