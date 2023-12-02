@@ -26,7 +26,7 @@ const createSessionFromUrl = async (url: string) => {
 
 const performOAuth = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
+    provider: "github",
     options: {
       redirectTo,
       skipBrowserRedirect: true,
@@ -47,7 +47,7 @@ const performOAuth = async () => {
 
 const sendMagicLink = async () => {
   const { error } = await supabase.auth.signInWithOtp({
-    email: "example@email.com",
+    email: "icesoluc@gmail.com",
     options: {
       emailRedirectTo: redirectTo,
     },

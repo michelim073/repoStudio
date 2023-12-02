@@ -21,10 +21,8 @@ export default function SettingsPage() {
         <ActivityIndicator />
         <Text style={{fontSize:20, paddingTop:15}}>Loading...</Text>
       </View>
-    );
-    
+    ); 
   }
-
   const doLogout = async () => {
     const {error} = await supabase.auth.signOut();
     if (error) {
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonContainer: {
-    backgroundColor: "#000968",
+    backgroundColor: "violet",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,

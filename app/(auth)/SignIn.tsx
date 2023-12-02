@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, TextInput, View, Button, Text, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, TextInput, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "../lib/supabase-client";
-
-import { makeRedirectUri } from "expo-auth-session";
 import { Stack } from "expo-router";
-
+import AuthLinking from "./AuthLinking";
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const redirectTo = makeRedirectUri();
-console.log('redirectTo: ', redirectTo)
+
 
   async function signInWithEmail() {
     setLoading(true);
@@ -18,7 +15,6 @@ console.log('redirectTo: ', redirectTo)
       email: email,
       password: password,
     });
-
     if (error) Alert.alert("Sign In Error", error.message);
     setLoading(false);
   }
@@ -31,8 +27,10 @@ console.log('redirectTo: ', redirectTo)
     } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        emailRedirectTo:'com.egbe://',
+      }
     })
-
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert('Revisa tu Email para la verificacion!')
     setLoading(false)

@@ -8,8 +8,6 @@ export default function Layout() {
     return (
         <Stack>
             <Stack.Screen name="SignIn"  options={{ headerShown: true }} />
-            
-          
         </Stack>
     )
 
