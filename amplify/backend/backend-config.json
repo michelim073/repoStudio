@@ -61,6 +61,11 @@
     }
   },
   "function": {
+    "CreatePaymentIntent": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ifaEgneOlolayePostConfirmation": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -68,6 +73,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_CreatePaymentIntent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreatePaymentIntent"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreatePaymentIntent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreatePaymentIntent"
+        }
+      ]
+    },
     "AMPLIFY_function_ifaEgneOlolayePostConfirmation_deploymentBucketName": {
       "usedBy": [
         {
