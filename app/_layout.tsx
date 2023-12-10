@@ -4,28 +4,30 @@ import 'core-js/full/symbol/async-iterator';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { Redirect, Slot, SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { Amplify } from 'aws-amplify';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react-native';
-import awsExports  from '../src/aws-exports';
-Amplify.configure(awsExports);
+import { StripeProvider } from '@stripe/stripe-react-native';
+import amplifyConfig from '../src/amplifyconfiguration.json';
+Amplify.configure(amplifyConfig);
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
+// export const unstable_settings = {
+//   // Ensure that reloading on `/modal` keeps a back button present.
+//   initialRouteName: '(tabs)',
+// };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -37,6 +39,7 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
+
     if (loaded) {
       SplashScreen.hideAsync();
     }
@@ -46,24 +49,25 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+
+  return  <RootLayoutNav />
+   
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+
   return (
-
-    <Authenticator.Provider>
-      <Authenticator signUpAttributes={['name']}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          </Stack>
-        </ThemeProvider>
-      </Authenticator>
-    </Authenticator.Provider>
-
+ <Authenticator.Provider>
+    <StripeProvider publishableKey='pk_test_51NA10LCzT3rbKoNuXrLQmhhQUc0HuWmR3HYdj9aER5wiNTuHmdEn3Hm0mYohCd9BJdP4pcLj70S06KuzviarLPFE003FByOYvW'>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack screenOptions={{headerShown:false}}>
+          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider>
+    </StripeProvider>
+     </Authenticator.Provider>
   );
 }

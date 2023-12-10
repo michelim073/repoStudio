@@ -6,14 +6,13 @@ import { Button } from 'react-native'
 import { DataStore } from 'aws-amplify/datastore';
 import { User } from '../../src/models';
 import { useEffect, useState } from 'react';
-import { generateClient,GraphQLQuery } from 'aws-amplify/api';
-import { createPaymentIntent,  } from '../../src/graphql/mutations';
+import { router } from 'expo-router';
+
 
 export default function TabOneScreen() {
-const [amount, setAmount] = useState(5500)
   const [usr, setUsr] = useState();
 
-  const client = generateClient();
+
   useEffect(() => {
     /**
      * This keeps `post` fresh.
@@ -27,25 +26,21 @@ const [amount, setAmount] = useState(5500)
     }
   }, []);
 
-  const fetchPaymentIntent = async () => { 
-    const res = await client.graphql({ query: createPaymentIntent, variables: { amount } } )
-   console.log(res)
-  }
-  
 
   function SignOutButton() {
     const { signOut } = useAuthenticator();
     return <Button title="Sign Out" onPress={signOut} />;
   }
-  console.log(usr)
+ 
   return (
     <View style={styles.container}>
       <SignOutButton />
       <Text style={styles.title}>Tab One</Text>
-      <Text onPress={fetchPaymentIntent}>consulta</Text>
+     
       {usr && usr.map((user:any) => <Text key={user.id}>{user.name}</Text>)}
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <EditScreenInfo path="app/(tabs)/index.tsx" /> 
+      <Text onPress={()=> router.push('/screens/paymentCheckout')}>Pago Suscripcion</Text>
     </View>
   );
 }
