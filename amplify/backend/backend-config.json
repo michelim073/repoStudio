@@ -1,5 +1,19 @@
 {
   "api": {
+    "StripeWebhook": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "StripeWebhook"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "ifaEgneOlolaye": {
       "dependsOn": [],
       "output": {
@@ -66,6 +80,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "StripeWebhook": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ifaEgneOlolayePostConfirmation": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -86,6 +105,22 @@
         {
           "category": "function",
           "resourceName": "CreatePaymentIntent"
+        }
+      ]
+    },
+    "AMPLIFY_function_StripeWebhook_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "StripeWebhook"
+        }
+      ]
+    },
+    "AMPLIFY_function_StripeWebhook_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "StripeWebhook"
         }
       ]
     },

@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, Text, View, Button } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { generateClient, GraphQLQuery } from 'aws-amplify/api';
-import { createPaymentIntent, } from '../../src/graphql/mutations';
+import { createPaymentIntent, } from '../src/graphql/mutations';
 import { useStripe } from '@stripe/stripe-react-native';
 
 

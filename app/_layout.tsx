@@ -6,7 +6,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Redirect, Slot, SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { ActivityIndicator, useColorScheme } from 'react-native';
 import { Amplify } from 'aws-amplify';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react-native';
 import { StripeProvider } from '@stripe/stripe-react-native';
@@ -18,10 +18,10 @@ export {
   ErrorBoundary,
 } from 'expo-router';
 
-// export const unstable_settings = {
-//   // Ensure that reloading on `/modal` keeps a back button present.
-//   initialRouteName: '(tabs)',
-// };
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: '(tabs)',
+};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -48,10 +48,7 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
-
   return  <RootLayoutNav />
-   
 }
 
 function RootLayoutNav() {
@@ -60,14 +57,17 @@ function RootLayoutNav() {
 
   return (
  <Authenticator.Provider>
+  <Authenticator signUpAttributes={['name']} >
     <StripeProvider publishableKey='pk_test_51NA10LCzT3rbKoNuXrLQmhhQUc0HuWmR3HYdj9aER5wiNTuHmdEn3Hm0mYohCd9BJdP4pcLj70S06KuzviarLPFE003FByOYvW'>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack screenOptions={{headerShown:false}}>
-          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="paymentCheckout" options={{ headerShown: true }}  />
         </Stack>
       </ThemeProvider>
     </StripeProvider>
+    </Authenticator>
      </Authenticator.Provider>
   );
 }
