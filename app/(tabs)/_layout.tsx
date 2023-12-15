@@ -1,8 +1,12 @@
+import 'core-js/full/symbol/async-iterator';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
-
+import react,{ useEffect } from 'react';
 import Colors from '../../constants/Colors';
+import { DataStore } from 'aws-amplify/datastore';
+import { ExpoSQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/ExpoSQLiteAdapter';
+import { User } from '../../src/models';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -16,6 +20,20 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    /**
+     * This keeps `post` fresh.
+     */
+    const sub = DataStore.observeQuery(User).subscribe(({ items }) => {
+     console.log(items)
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  }, []);
+  
 
   return (
     <Tabs
