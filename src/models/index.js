@@ -2,11 +2,24 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const TradicionEnum = {
+  "ISESE": "ISESE",
+  "AFROCUBANA": "AFROCUBANA"
+};
 
+const IniciacionEnum = {
+  "OLORISA": "OLORISA",
+  "IFA": "IFA"
+};
 
-const { User, PaymentIntent } = initSchema(schema);
+const { ContenidoClases, Clases, ModulosCursos, Cursos, User } = initSchema(schema);
 
 export {
+  ContenidoClases,
+  Clases,
+  ModulosCursos,
+  Cursos,
   User,
-  PaymentIntent
+  TradicionEnum,
+  IniciacionEnum
 };
