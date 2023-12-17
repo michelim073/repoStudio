@@ -12,7 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Chevron from './Chevron';
-import { router } from 'expo-router';
+import { Stack, router } from 'expo-router';
 
 
 
@@ -23,6 +23,7 @@ type Props = {
 
 const Accordion = ({value}: Props) => {
     const [clases, setClases] = useState<Clases[]>([]);
+    const [auth, setAuth] = useState(true)
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);
   const open = useSharedValue(false);
@@ -45,18 +46,27 @@ const Accordion = ({value}: Props) => {
     height: heightValue.value,
   }));
 
-  const goClase = (id) => {
+  const goClase = (id: any) => {
     router.push({ pathname: `/screens/clases/ClasesScreen`, params: {id:id}});
   }
 
   return (
     <View style={styles.container}>
-      <Pressable
+      <Stack.Screen options={{title: 'Modulos'}}/>
+      <View style={styles.encabezado}>
+      <Text style={{fontWeight:'900', fontSize:16, color:'#488a2b'}}>{value.nombre}</Text>
+       <Text style={{}}>{`Costo: ${value.costoModulo}$`}</Text>
+       <Text style={{}}>{`Modulo: ${value.index}`}</Text>
+       </View>
+      <Pressable disabled={!auth}
         onPress={() => {
           if (heightValue.value === 0) {
             runOnUI(() => {
               'worklet';
               heightValue.value = withTiming(measure(listRef)!.height);
+              if (heightValue.value === null) {
+                return;
+              }
             })();
           } else {
             heightValue.value = withTiming(0);
@@ -64,12 +74,14 @@ const Accordion = ({value}: Props) => {
           open.value = !open.value;
         }}
         style={styles.titleContainer}>
-        <Text style={styles.textTitle}>{value.nombre}</Text>
+        {/* <Text style={styles.textTitle}>{value.nombre}</Text> */}
+        <Text>SUSCRITO</Text>
+       
         <Chevron progress={progress} />
       </Pressable>
       <Animated.View style={heightAnimationStyle}>
-        <Animated.View style={styles.contentContainer} ref={listRef} >
-          {clases &&
+        <Animated.View style={styles.contentContainer} ref={listRef}>
+         {clases &&  
             clases.map((v, i) => {
               return (
                 <View key={i} style={styles.content}>
@@ -87,12 +99,12 @@ export default Accordion;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E3EDFB',
+    backgroundColor: "#f2f0cb",
     marginHorizontal: 10,
-    marginVertical: 10,
-    borderRadius: 14,
+    marginVertical: 5,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#0F56B3',
+    borderColor: '#19a132',
     overflow: 'hidden',
   },
   textTitle: {
@@ -100,7 +112,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   titleContainer: {
-    padding: 20,
+    padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -111,11 +123,14 @@ const styles = StyleSheet.create({
     top: 0,
   },
   content: {
-    padding: 10,
-    backgroundColor: '#D6E1F0',
+    padding: 5,
+    backgroundColor: '#cfe9d0',
   },
   textContent: {
-    fontSize: 16,
+    fontSize: 15,
     color: 'black',
+  },
+  encabezado:{
+marginHorizontal:10,
   },
 });

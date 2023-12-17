@@ -10,7 +10,6 @@ const ClasesScreen = (props: Props) => {
     const [contenidos, setContenido] = useState<ContenidoClases[]>([]);
     const param = useLocalSearchParams();
     const id : any = param.id;
-    console.log(id)
     useEffect(() => {
         const sub = DataStore.observeQuery(ContenidoClases, c => c.clasesID.eq(id))
             .subscribe(({ items }) => {

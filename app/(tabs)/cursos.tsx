@@ -4,6 +4,7 @@ import { Cursos } from '../../src/models'
 import { DataStore } from 'aws-amplify/datastore'
 import { FlatList } from 'react-native-gesture-handler'
 import CursosItemList from '../componentes/CursosItemList'
+import MenuAnimado from '../screens/menus/MenuAnimado'
 
 type Props = {}
 
@@ -28,6 +29,7 @@ const cursos = (props: Props) => {
             <FlatList
                 data={cursos}
                 renderItem={({ item }) => <CursosItemList infoCurso={item}/>}/>
+                <MenuAnimado/>
         </View>
     )
 }

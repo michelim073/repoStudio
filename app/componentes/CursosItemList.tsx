@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Cursos } from '../../src/models'
 import { router } from 'expo-router';
+import MenuAnimado from '../screens/menus/MenuAnimado';
 
 type Props = {
     infoCurso: Cursos; 
@@ -17,8 +18,10 @@ const CursosItemList = ({infoCurso}: Props) => {
     }
 
   return (
+    <View>
     <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
     <View style={styles.container}>
+       
         <View style={styles.titulo}>
              <Text style={{fontWeight:'bold', fontSize:24}}>{infoCurso.nombre}</Text>
              <Text style={{fontWeight:'bold', fontSize:14}}>{`Categoria: ${infoCurso.categoria}`}</Text>
@@ -28,6 +31,8 @@ const CursosItemList = ({infoCurso}: Props) => {
      
     </View>
     </TouchableOpacity>
+    </View>
+    
   )
 }
 
@@ -39,7 +44,8 @@ const styles = StyleSheet.create({
         backgroundColor:'lightgray',
         borderRadius:8,
         marginHorizontal:10,
-        gap:5,
+        gap:10,
+        marginVertical:8,
 
     },
     titulo:{

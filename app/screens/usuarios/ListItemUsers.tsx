@@ -12,7 +12,9 @@ const ListItemUsers = ({detailUser}) => {
       <Text style={{fontWeight:'bold', fontSize:16}}>{detailUser.name}</Text>
       <Text style={{fontWeight:'bold', fontSize:12, color:'gray'}}>{detailUser.email}</Text>
     </View> 
+    
     </View>
+   
     </Pressable>
    
   )
@@ -23,11 +25,12 @@ export default ListItemUsers
 const styles = StyleSheet.create({
     container:{
             flexDirection: 'row',
-          
+            backgroundColorº: 'white',
             marginHorizontal: 5,
     },
     righBox:{
       justifyContent: 'center',
       marginLeft: 5
-    }
+    },
+ 
 })
