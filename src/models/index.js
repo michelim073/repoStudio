@@ -12,14 +12,17 @@ const IniciacionEnum = {
   "IFA": "IFA"
 };
 
-const { ContenidoClases, Clases, ModulosCursos, Cursos, User } = initSchema(schema);
+const { MessagesClase, ChatRoomClases, ContenidoClases, Clases, ModulosCursos, Cursos, User, ChatRoomClasesUser } = initSchema(schema);
 
 export {
+  MessagesClase,
+  ChatRoomClases,
   ContenidoClases,
   Clases,
   ModulosCursos,
   Cursos,
   User,
+  ChatRoomClasesUser,
   TradicionEnum,
   IniciacionEnum
 };

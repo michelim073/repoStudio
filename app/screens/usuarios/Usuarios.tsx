@@ -35,6 +35,7 @@ useEffect(() => {
       data={users}
       renderItem={({item}) => (<ListItemUsers detailUser={item}/>)}
       contentContainerStyle={{gap: 5, paddingTop:10}}
+    
       />
     </View>
     </>

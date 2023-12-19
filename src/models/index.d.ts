@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
 export enum TradicionEnum {
   ISESE = "ISESE",
@@ -13,6 +13,82 @@ export enum IniciacionEnum {
 }
 
 
+
+type EagerMessagesClase = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<MessagesClase, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text?: string | null;
+  readonly audio?: string | null;
+  readonly video?: string | null;
+  readonly imagen?: string | null;
+  readonly userID: string;
+  readonly chatroomclasesID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyMessagesClase = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<MessagesClase, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text?: string | null;
+  readonly audio?: string | null;
+  readonly video?: string | null;
+  readonly imagen?: string | null;
+  readonly userID: string;
+  readonly chatroomclasesID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type MessagesClase = LazyLoading extends LazyLoadingDisabled ? EagerMessagesClase : LazyMessagesClase
+
+export declare const MessagesClase: (new (init: ModelInit<MessagesClase>) => MessagesClase) & {
+  copyOf(source: MessagesClase, mutator: (draft: MutableModel<MessagesClase>) => MutableModel<MessagesClase> | void): MessagesClase;
+}
+
+type EagerChatRoomClases = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ChatRoomClases, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly newMessages?: number | null;
+  readonly image?: string | null;
+  readonly MessagesClases?: (MessagesClase | null)[] | null;
+  readonly Clases?: Clases | null;
+  readonly Users?: (ChatRoomClasesUser | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly chatRoomClasesClasesId?: string | null;
+}
+
+type LazyChatRoomClases = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ChatRoomClases, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly newMessages?: number | null;
+  readonly image?: string | null;
+  readonly MessagesClases: AsyncCollection<MessagesClase>;
+  readonly Clases: AsyncItem<Clases | undefined>;
+  readonly Users: AsyncCollection<ChatRoomClasesUser>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly chatRoomClasesClasesId?: string | null;
+}
+
+export declare type ChatRoomClases = LazyLoading extends LazyLoadingDisabled ? EagerChatRoomClases : LazyChatRoomClases
+
+export declare const ChatRoomClases: (new (init: ModelInit<ChatRoomClases>) => ChatRoomClases) & {
+  copyOf(source: ChatRoomClases, mutator: (draft: MutableModel<ChatRoomClases>) => MutableModel<ChatRoomClases> | void): ChatRoomClases;
+}
 
 type EagerContenidoClases = {
   readonly [__modelMeta__]: {
@@ -179,6 +255,8 @@ type EagerUser = {
   readonly roleUser?: string | null;
   readonly imageUser?: string | null;
   readonly iniciacion?: IniciacionEnum | keyof typeof IniciacionEnum | null;
+  readonly MessagesClases?: (MessagesClase | null)[] | null;
+  readonly chatroomclasess?: (ChatRoomClasesUser | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -194,6 +272,8 @@ type LazyUser = {
   readonly roleUser?: string | null;
   readonly imageUser?: string | null;
   readonly iniciacion?: IniciacionEnum | keyof typeof IniciacionEnum | null;
+  readonly MessagesClases: AsyncCollection<MessagesClase>;
+  readonly chatroomclasess: AsyncCollection<ChatRoomClasesUser>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -202,4 +282,38 @@ export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser :
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
+}
+
+type EagerChatRoomClasesUser = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ChatRoomClasesUser, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly chatRoomClasesId?: string | null;
+  readonly userId?: string | null;
+  readonly chatRoomClases: ChatRoomClases;
+  readonly user: User;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyChatRoomClasesUser = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ChatRoomClasesUser, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly chatRoomClasesId?: string | null;
+  readonly userId?: string | null;
+  readonly chatRoomClases: AsyncItem<ChatRoomClases>;
+  readonly user: AsyncItem<User>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ChatRoomClasesUser = LazyLoading extends LazyLoadingDisabled ? EagerChatRoomClasesUser : LazyChatRoomClasesUser
+
+export declare const ChatRoomClasesUser: (new (init: ModelInit<ChatRoomClasesUser>) => ChatRoomClasesUser) & {
+  copyOf(source: ChatRoomClasesUser, mutator: (draft: MutableModel<ChatRoomClasesUser>) => MutableModel<ChatRoomClasesUser> | void): ChatRoomClasesUser;
 }

@@ -1,13 +1,16 @@
 import 'core-js/full/symbol/async-iterator';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
-import react,{ useEffect } from 'react';
+import { ActivityIndicator, Pressable, View, useColorScheme } from 'react-native';
+import react,{ useEffect, useState } from 'react';
 import Colors from '../../constants/Colors';
-import { DataStore } from 'aws-amplify/datastore';
+import {  DataStore } from 'aws-amplify/datastore';
 import { ExpoSQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/ExpoSQLiteAdapter';
 import { User } from '../../src/models';
 import { Octicons } from '@expo/vector-icons';
+import { useAuthStore } from '../store/AuthUserStore';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { Hub } from 'aws-amplify/utils';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -25,22 +28,37 @@ function TabBarIcon1(props: {
   return <Octicons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-
-
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
   
-    const sub = DataStore.observeQuery(User).subscribe(({ items }) => {
-    //  console.log(items)
-    });
+  const {user} = useAuthenticator((context) => [context.user]);
+  const setAuthUser = useAuthStore((state) => state.setAuthUser )
 
+  useEffect(() => { 
+    const hubListenerCancel = Hub.listen('auth', (data) => {
+      
+      if (data.payload.event === 'signedOut') {
+        DataStore.clear();
+        console.log('Data Cleared');
+      }
+    });
+    return () => {
+      hubListenerCancel();
+    }
+  }, [])
+  
+  useEffect(() => {
+    const sub = DataStore.observeQuery(User, c => c.id.eq(user?.userId)).subscribe(({ items }) => {
+    //  console.log(items)
+      if (items[0] === undefined) {
+        return (console.log('undefined'))
+      }
+    setAuthUser(items)
+    });
     return () => {
       sub.unsubscribe();
     };
   }, []);
-  
 
   return (
     <Tabs

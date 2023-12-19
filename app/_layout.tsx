@@ -7,6 +7,7 @@ import { useColorScheme } from 'react-native';
 import { Authenticator } from '@aws-amplify/ui-react-native';
 import { Amplify } from 'aws-amplify';
 import amplifyconfig from '../src/amplifyconfiguration.json';
+import { DataStore } from 'aws-amplify/datastore';
 Amplify.configure(amplifyconfig);
 
 export {
@@ -28,6 +29,9 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
+  async function loadResourcesAndDataAsync() {
+    await DataStore.start()
+  }
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -35,6 +39,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
+      loadResourcesAndDataAsync()
       SplashScreen.hideAsync();
     }
   }, [loaded]);
@@ -56,6 +61,7 @@ function RootLayoutNav() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="modalCreaCurso" options={{ presentation: 'modal' }} />
           </Stack>
         </ThemeProvider>
       </Authenticator>

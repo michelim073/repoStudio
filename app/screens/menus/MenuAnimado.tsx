@@ -8,18 +8,13 @@ import Animated, {
     withTiming,
     interpolate,
 } from 'react-native-reanimated';
-
-
 const TRANSLATE_Y = -30;
 const TRANSLATE_x = -100;
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
 export default function App() {
-
     const translateYcamara = useSharedValue(0);
     const translateXcamara = useSharedValue(0);
     const isOpened = useRef(false);
-
     const rCameraAnimatedStyles = useAnimatedStyle(() => {
         return {
             transform: [
@@ -33,8 +28,7 @@ export default function App() {
     return (
         <>
             <View style={styles.container}>
-
-                <AnimatedPressable style={[styles.camera, rCameraAnimatedStyles]}>
+                <AnimatedPressable style={[rCameraAnimatedStyles]}>
                     <View style={styles.bottomCrear}>
                         <Text style={{ fontSize: 14, color:'black', fontWeight:'bold' }} onPress={() => console.log('Crear')}>Crear Curso</Text>
                     </View>
@@ -73,15 +67,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-    },
-    camera: {
-        // width: 50,
-        // height: 50,
-        // backgroundColor: 'violet',
-        // borderRadius: 25,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // position: 'absolute',
     },
     bottomCrear: {
         backgroundColor: '#9be14a',

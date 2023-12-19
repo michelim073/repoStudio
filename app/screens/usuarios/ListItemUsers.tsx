@@ -3,7 +3,7 @@ import React from 'react'
 
 const ListItemUsers = ({detailUser}) => {
 
-
+ 
   return ( 
     <Pressable onPress={() => console.log(detailUser.name)}>
      <View style={styles.container}>
@@ -12,16 +12,11 @@ const ListItemUsers = ({detailUser}) => {
       <Text style={{fontWeight:'bold', fontSize:16}}>{detailUser.name}</Text>
       <Text style={{fontWeight:'bold', fontSize:12, color:'gray'}}>{detailUser.email}</Text>
     </View> 
-    
     </View>
-   
     </Pressable>
-   
   )
 }
-
 export default ListItemUsers
-
 const styles = StyleSheet.create({
     container:{
             flexDirection: 'row',

@@ -1,3 +1,22 @@
+type MessagesClase @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  audio: String
+  video: String
+  imagen: String
+  userID: ID! @index(name: "byUser")
+  chatroomclasesID: ID! @index(name: "byChatRoomClases")
+}
+
+type ChatRoomClases @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  newMessages: Int
+  image: String
+  MessagesClases: [MessagesClase] @hasMany(indexName: "byChatRoomClases", fields: ["id"])
+  Clases: Clases @hasOne
+  Users: [User] @manyToMany(relationName: "ChatRoomClasesUser")
+}
+
 type ContenidoClases @model @auth(rules: [{allow: public}]) {
   id: ID!
   text: String
@@ -56,5 +75,7 @@ type User @model @auth(rules: [{allow: public}]) {
   roleUser: String
   imageUser: String
   iniciacion: IniciacionEnum
+  MessagesClases: [MessagesClase] @hasMany(indexName: "byUser", fields: ["id"])
+  chatroomclasess: [ChatRoomClases] @manyToMany(relationName: "ChatRoomClasesUser")
 }
  

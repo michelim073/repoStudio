@@ -24,8 +24,9 @@ console.log(contenidos)
     <View>
      <FlatList
         data={contenidos}
-        renderItem={({item}) => <Text>{item.text}</Text>}
+        renderItem={({item}) => <Text style={styles.titleClase}>{item.text}</Text>}
         keyExtractor={(item) => item.id}
+       
       />
     </View>
   )
@@ -33,4 +34,10 @@ console.log(contenidos)
 
 export default ClasesScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    titleClase:{
+        fontSize: 14,
+        fontWeight: 'bold',
+      
+    }
+})
