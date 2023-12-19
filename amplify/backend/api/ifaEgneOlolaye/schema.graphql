@@ -1,0 +1,81 @@
+type MessagesClase @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  audio: String
+  video: String
+  imagen: String
+  userID: ID! @index(name: "byUser")
+  chatroomclasesID: ID! @index(name: "byChatRoomClases")
+}
+
+type ChatRoomClases @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  newMessages: Int
+  image: String
+  MessagesClases: [MessagesClase] @hasMany(indexName: "byChatRoomClases", fields: ["id"])
+  Clases: Clases @hasOne
+  Users: [User] @manyToMany(relationName: "ChatRoomClasesUser")
+}
+
+type ContenidoClases @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String
+  image: String
+  audio: String
+  video: String
+  youtube: String
+  clasesID: ID! @index(name: "byClases")
+}
+
+type Clases @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  index: Int
+  titulo: String
+  status: String
+  fechaPublicacion: AWSDateTime
+  ContenidoClases: [ContenidoClases] @hasMany(indexName: "byClases", fields: ["id"])
+  moduloscursosID: ID! @index(name: "byModulosCursos")
+}
+
+enum TradicionEnum {
+  ISESE
+  AFROCUBANA
+}
+
+enum IniciacionEnum {
+  OLORISA
+  IFA
+}
+
+type ModulosCursos @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  index: Int
+  nombre: String
+  descripcion: String
+  costoModulo: Float
+  cursosID: ID! @index(name: "byCursos")
+  Clases: [Clases] @hasMany(indexName: "byModulosCursos", fields: ["id"])
+}
+
+type Cursos @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  index: Int
+  nombre: String
+  descripcion: String
+  imageCover: String
+  categoria: String
+  tradicion: TradicionEnum
+  ModulosCurso: [ModulosCursos] @hasMany(indexName: "byCursos", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  email: String
+  roleUser: String
+  imageUser: String
+  iniciacion: IniciacionEnum
+  MessagesClases: [MessagesClase] @hasMany(indexName: "byUser", fields: ["id"])
+  chatroomclasess: [ChatRoomClases] @manyToMany(relationName: "ChatRoomClasesUser")
+}
+ 

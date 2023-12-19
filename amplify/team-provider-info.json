@@ -1,0 +1,35 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ifaegneololaye-staging-165013-authRole",
+      "UnauthRoleArn": "arn:aws:iam::557840787584:role/amplify-ifaegneololaye-staging-165013-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::557840787584:role/amplify-ifaegneololaye-staging-165013-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-ifaegneololaye-staging-165013-deployment",
+      "UnauthRoleName": "amplify-ifaegneololaye-staging-165013-unauthRole",
+      "StackName": "amplify-ifaegneololaye-staging-165013",
+      "StackId": "arn:aws:cloudformation:ca-central-1:557840787584:stack/amplify-ifaegneololaye-staging-165013/86b8fd00-9457-11ee-b86e-06c06cc50e20",
+      "AmplifyAppId": "d3ua3gdos5mykt",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-ifaegneololaye-staging-165013-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "ifaEgneOlolaye": {}
+      },
+      "function": {
+        "CreatePaymentIntent": {
+          "deploymentBucketName": "amplify-ifaegneololaye-staging-165013-deployment",
+          "s3Key": "amplify-builds/CreatePaymentIntent-44375247346f63417175-build.zip"
+        },
+        "StripeWebhook": {
+          "deploymentBucketName": "amplify-ifaegneololaye-staging-165013-deployment",
+          "s3Key": "amplify-builds/StripeWebhook-5448474352543143347a-build.zip"
+        },
+        "ifaEgneOlolayePostConfirmation": {
+          "deploymentBucketName": "amplify-ifaegneololaye-staging-165013-deployment",
+          "s3Key": "amplify-builds/ifaEgneOlolayePostConfirmation-73634759543564496733-build.zip"
+        }
+      }
+    }
+  }
+}

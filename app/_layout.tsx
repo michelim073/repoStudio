@@ -4,8 +4,14 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-
+import { Amplify } from 'aws-amplify';
 import { useColorScheme } from '@/components/useColorScheme';
+import { DataStore } from 'aws-amplify/datastore';
+import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react-native';
+
+import amplifyconfig from '../src/amplifyconfiguration.json';
+Amplify.configure(amplifyconfig);
+
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -26,6 +32,10 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
+  async function onDataStore() {
+    await DataStore.start()
+  }
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -33,6 +43,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
+      onDataStore();
       SplashScreen.hideAsync();
     }
   }, [loaded]);
@@ -48,11 +59,15 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <Authenticator.Provider>
+      <Authenticator>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        </ThemeProvider>
+      </Authenticator>
+    </Authenticator.Provider>
   );
 }
