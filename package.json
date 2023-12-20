@@ -16,7 +16,9 @@
     "@aws-amplify/datastore-storage-adapter": "^2.1.7",
     "@aws-amplify/react-native": "^1.0.7",
     "@aws-amplify/ui-react-native": "^2.0.6",
+    "@expo-google-fonts/inter": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",
+    "@gorhom/bottom-sheet": "^4",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
     "@react-navigation/native": "^6.0.2",
@@ -24,6 +26,7 @@
     "core-js": "^3.34.0",
     "expo": "~49.0.15",
     "expo-font": "~11.4.0",
+    "expo-linear-gradient": "~12.3.0",
     "expo-linking": "~5.0.2",
     "expo-router": "^2.0.0",
     "expo-splash-screen": "~0.20.5",
@@ -41,9 +44,7 @@
     "react-native-screens": "~3.22.0",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-web": "~0.19.6",
-    "zustand": "^4.4.7",
-    "expo-linear-gradient": "~12.3.0",
-    "@gorhom/bottom-sheet": "^4"
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

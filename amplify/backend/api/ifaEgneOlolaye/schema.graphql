@@ -59,12 +59,12 @@ type ModulosCursos @model @auth(rules: [{allow: public}]) {
 
 type Cursos @model @auth(rules: [{allow: public}]) {
   id: ID!
-  index: Int
-  nombre: String
+  index: Int!
+  nombre: String!
   descripcion: String
   imageCover: String
   categoria: String
-  tradicion: TradicionEnum
+  tradicion: String
   ModulosCurso: [ModulosCursos] @hasMany(indexName: "byCursos", fields: ["id"])
 }
 

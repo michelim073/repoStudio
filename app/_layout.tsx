@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
@@ -8,6 +8,7 @@ import { Authenticator } from '@aws-amplify/ui-react-native';
 import { Amplify } from 'aws-amplify';
 import amplifyconfig from '../src/amplifyconfiguration.json';
 import { DataStore } from 'aws-amplify/datastore';
+import { useFonts, Inter_900Black, Inter_500Medium, Inter_800ExtraBold } from '@expo-google-fonts/inter';
 Amplify.configure(amplifyconfig);
 
 export {
@@ -26,6 +27,9 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Inter_900Black,
+    Inter_500Medium,
+    Inter_800ExtraBold ,
     ...FontAwesome.font,
   });
 

@@ -4,7 +4,7 @@ import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
 import MenuAnimado from '../screens/menus/MenuAnimado';
 import { useAuthStore } from '../store/AuthUserStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '../../src/models';
 
 type State = {
@@ -13,23 +13,20 @@ type State = {
 
 export default function TabTwoScreen() {
   const {signOut} = useAuthenticator((context) => [context.user]);
-
+  
 
   const setUserAuth = useAuthStore((state) => state.setAuthUser)
   const usr = useAuthStore((state) => state.user)
 
 
-  
+ 
 
-  const handlePress = () => {
-  
-  }
+
   return (
     <View style={styles.container}>
       <Text onPress={signOut}>Sign Out</Text>
       <Text>'Bienvenido: {usr[0].roleUser} </Text>
-      <Text onPress={handlePress}>{usr[0].imageUser}</Text>
-     
+   
       <MenuAnimado/>
     </View>
   );

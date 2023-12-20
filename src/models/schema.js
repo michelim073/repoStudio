@@ -576,14 +576,14 @@ export const schema = {
                     "name": "index",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "nombre": {
                     "name": "nombre",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "descripcion": {
@@ -610,9 +610,7 @@ export const schema = {
                 "tradicion": {
                     "name": "tradicion",
                     "isArray": false,
-                    "type": {
-                        "enum": "TradicionEnum"
-                    },
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -912,5 +910,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "9ee75b5bb648dd172276a88792e5b0a5"
+    "version": "f19882f94e287bfd9a2fb6878ca4a25c"
 };

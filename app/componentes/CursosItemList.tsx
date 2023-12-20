@@ -2,16 +2,16 @@ import { StyleSheet, Text, TouchableOpacity, View, Dimensions, Animated } from '
 import React from 'react'
 import { Cursos } from '../../src/models'
 import { router } from 'expo-router';
-import MenuAnimado from '../screens/menus/MenuAnimado';
 import { LinearGradient } from 'expo-linear-gradient';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { FontAwesome } from '@expo/vector-icons';
 
 type Props = {
-    infoCurso: Cursos;
+    infoCurso: Cursos,
+    deleteCursoAlert: (id: string, nombre:string) => void
 }
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const CursosItemList = ({ infoCurso }: Props) => {
+const CursosItemList = ({ infoCurso, deleteCursoAlert }: Props) => {
 
     const handlePress = () => {
         // router.push('/screens/modulos/Modulos')
@@ -24,26 +24,14 @@ const CursosItemList = ({ infoCurso }: Props) => {
             extrapolate: 'clamp',
         })
         return (
-            <TouchableOpacity activeOpacity={0.6} style={styles.boxMenu}>
-                {/* <Animated.Text style={{fontSize:18,fontWeight:'bold',color:'white', transform:[{scale:scale}]}}>Eliminar</Animated.Text> */}
-                <Animated.View><FontAwesome name="trash-o" size={28} color="red" /></Animated.View>
+            <TouchableOpacity onPress={()=> deleteCursoAlert(infoCurso.id, infoCurso.nombre)} activeOpacity={0.6} style={styles.boxMenu}>
+                <Animated.View>
+                    <FontAwesome name="trash-o" size={28} color="red" />
+                </Animated.View>
             </TouchableOpacity>
         )
     }
-    const renderRightActions = (progress: any, dragX: any) => {
-        const scale = dragX.interpolate({
-            inputRange: [-100, 0],
-            outputRange: [1, 0],
-            extrapolate: 'clamp',
-        })
-        return (
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity activeOpacity={0.6} style={styles.boxMenu}>
-                    <Animated.Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', transform: [{ scale: scale }] }}>Eliminar</Animated.Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+ 
     return (
 
         <View style={styles.container}>
@@ -59,7 +47,7 @@ const CursosItemList = ({ infoCurso }: Props) => {
                 colors={['#ceab2c', '#f7e70a', '#72cb54']}
                 style={styles.button}>
                 <TouchableOpacity activeOpacity={0.7} onPress={handlePress} style={[styles.titulo,]}>
-                    <Text style={{ fontWeight: '600', fontSize: 24, color: 'black' }}>{infoCurso.nombre}</Text>
+                    <Text style={{ fontFamily:'Inter_900Black', fontSize: 23, color: 'black' }}>{infoCurso.nombre}</Text>
                     <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{`Categoria: ${infoCurso.categoria}`}</Text>
                 </TouchableOpacity>
                 <View style={{ gap: 10 }}>
@@ -88,7 +76,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginHorizontal: 10,
         padding: 10,
-
+        
+       
     },
     boxMenu: {
         width: 50,
