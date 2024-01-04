@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "entrenamientoifa",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -17,13 +17,27 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.entrenamientoIfa"
+      "bundleIdentifier": "com.anonymous.entrenamientoIfa",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ],
+        "NSLocationDefaultAccuracyReduced":true,
+        "NSLocationWhenInUseUsageDescription": "Esto es necesario para poder usar la ubicación en la aplicación.",
+        "NSLocationUsageDescription":"Allows App to use Face ID for a simpler sign in.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allows App to use location services in the foreground and background.",
+    }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"],
       "package": "com.anonymous.entrenamientoIfa"
     },
     "web": {
@@ -32,6 +46,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
       "expo-router"
     ],
     "experiments": {

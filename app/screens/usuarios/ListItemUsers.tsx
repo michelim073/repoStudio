@@ -1,7 +1,13 @@
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
+import { User } from '../../../src/models'
 
-const ListItemUsers = ({detailUser}) => {
+type Props = {
+  detailUser: any
+
+}
+
+const ListItemUsers = ({detailUser}:Props) => {
 
  
   return ( 

@@ -8,7 +8,7 @@ import MenuAnimado from '../screens/menus/MenuAnimado'
 import { Link, Stack, router } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons'
 import { useCallback, useMemo, useRef } from 'react';
-import BottomSheet, { useBottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, useBottomSheetModal } from '@gorhom/bottom-sheet';
 
 type Props = {}
 
@@ -72,6 +72,7 @@ const cursos = (props: Props) => {
     }
 
     const deleteCursoAlert = (id:string, nombre: string) =>
+   
     Alert.alert('Alerta',
      `Se va a eliminar el curso ${nombre} , esta seguro?, se eliminara de forma Permanente...`,
     [
@@ -80,7 +81,7 @@ const cursos = (props: Props) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () =>deleteCurso(id)},
+      {text: 'OK', onPress: () => deleteCurso(id)},
     ]);
 
 
@@ -93,7 +94,6 @@ const cursos = (props: Props) => {
     const handleClosePress = useCallback(() => {
         clearState()
         bottomSheetRef?.current?.close()
-       
     }, [])
     const handleExpandPress = () => bottomSheetRef?.current?.expand();
     // variables
@@ -106,9 +106,9 @@ const cursos = (props: Props) => {
         <>
             <Stack.Screen options={{
                 headerRight: () =>(
-                    <Pressable onPress={handleExpandPress}>
-                        {isVisible && <FontAwesome name='plus-circle' size={25} color={'gray'} style={{marginRight:20}}/>}
-                    </Pressable>
+            <Pressable onPress={handleExpandPress}>
+                {isVisible && <FontAwesome name='plus-circle' size={25} color={'gray'} style={{marginRight:20}}/>}
+           </Pressable>
                 )
             }} />
             <View style={styles.container}>
@@ -123,7 +123,11 @@ const cursos = (props: Props) => {
                snapPoints={snapPoints}
                onChange={handleSheetChanges}
                enablePanDownToClose={false}
-               style={{ paddingTop: 5}}
+               backgroundStyle={{ backgroundColor: 'white'  }}
+               backdropComponent={(props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />}
+               handleStyle={{ backgroundColor: 'white' }}
+            
+               style={{ paddingTop: 0}}
            >
             
                <ScrollView showsVerticalScrollIndicator={false} style={styles.contentContainerBottom}>

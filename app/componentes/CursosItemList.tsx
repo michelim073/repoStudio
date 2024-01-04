@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     background: {
         position: 'absolute',

@@ -1,5 +1,112 @@
 export const schema = {
     "models": {
+        "Suscripciones": {
+            "name": "Suscripciones",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "expiresAt": {
+                    "name": "expiresAt",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "TypeSuscripcion"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "moduloscursosID": {
+                    "name": "moduloscursosID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Suscripciones",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byModulosCursos",
+                        "fields": [
+                            "moduloscursosID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "MessagesClase": {
             "name": "MessagesClase",
             "fields": {
@@ -152,24 +259,6 @@ export const schema = {
                         ]
                     }
                 },
-                "Clases": {
-                    "name": "Clases",
-                    "isArray": false,
-                    "type": {
-                        "model": "Clases"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "chatRoomClasesClasesId"
-                        ]
-                    }
-                },
                 "Users": {
                     "name": "Users",
                     "isArray": true,
@@ -201,13 +290,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "chatRoomClasesClasesId": {
-                    "name": "chatRoomClasesClasesId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -399,6 +481,24 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "ChatRoomClases": {
+                    "name": "ChatRoomClases",
+                    "isArray": false,
+                    "type": {
+                        "model": "ChatRoomClases"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "clasesChatRoomClasesId"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -414,6 +514,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "clasesChatRoomClasesId": {
+                    "name": "clasesChatRoomClasesId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -500,6 +607,22 @@ export const schema = {
                     "isArray": true,
                     "type": {
                         "model": "Clases"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "moduloscursosID"
+                        ]
+                    }
+                },
+                "Suscripciones": {
+                    "name": "Suscripciones",
+                    "isArray": true,
+                    "type": {
+                        "model": "Suscripciones"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -751,6 +874,22 @@ export const schema = {
                         ]
                     }
                 },
+                "SuscripcionesUser": {
+                    "name": "SuscripcionesUser",
+                    "isArray": true,
+                    "type": {
+                        "model": "Suscripciones"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "userID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -893,6 +1032,14 @@ export const schema = {
         }
     },
     "enums": {
+        "TypeSuscripcion": {
+            "name": "TypeSuscripcion",
+            "values": [
+                "PAGO",
+                "INVITADO",
+                "PENDIENTE"
+            ]
+        },
         "TradicionEnum": {
             "name": "TradicionEnum",
             "values": [
@@ -910,5 +1057,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "f19882f94e287bfd9a2fb6878ca4a25c"
+    "version": "ba6aaf71552983badf844a8b67f82829"
 };

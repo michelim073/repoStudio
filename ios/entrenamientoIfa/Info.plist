@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>myapp</string>
+          <string>entrenamientoifa</string>
           <string>com.anonymous.entrenamientoIfa</string>
         </array>
       </dict>
@@ -49,9 +49,24 @@
         </dict>
       </dict>
     </dict>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to use your location.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your location</string>
+    <key>NSLocationDefaultAccuracyReduced</key>
+    <true/>
+    <key>NSLocationUsageDescription</key>
+    <string>Allows App to use Face ID for a simpler sign in.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Esto es necesario para poder usar la ubicación en la aplicación.</string>
     <key>NSUserActivityTypes</key>
     <array>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>location</string>
+      <string>fetch</string>
     </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>

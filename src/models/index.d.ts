@@ -2,6 +2,12 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
+export enum TypeSuscripcion {
+  PAGO = "PAGO",
+  INVITADO = "INVITADO",
+  PENDIENTE = "PENDIENTE"
+}
+
 export enum TradicionEnum {
   ISESE = "ISESE",
   AFROCUBANA = "AFROCUBANA"
@@ -13,6 +19,42 @@ export enum IniciacionEnum {
 }
 
 
+
+type EagerSuscripciones = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Suscripciones, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly status: string;
+  readonly expiresAt: string;
+  readonly type: TypeSuscripcion | keyof typeof TypeSuscripcion;
+  readonly userID: string;
+  readonly moduloscursosID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySuscripciones = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Suscripciones, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly status: string;
+  readonly expiresAt: string;
+  readonly type: TypeSuscripcion | keyof typeof TypeSuscripcion;
+  readonly userID: string;
+  readonly moduloscursosID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Suscripciones = LazyLoading extends LazyLoadingDisabled ? EagerSuscripciones : LazySuscripciones
+
+export declare const Suscripciones: (new (init: ModelInit<Suscripciones>) => Suscripciones) & {
+  copyOf(source: Suscripciones, mutator: (draft: MutableModel<Suscripciones>) => MutableModel<Suscripciones> | void): Suscripciones;
+}
 
 type EagerMessagesClase = {
   readonly [__modelMeta__]: {
@@ -61,11 +103,9 @@ type EagerChatRoomClases = {
   readonly newMessages?: number | null;
   readonly image?: string | null;
   readonly MessagesClases?: (MessagesClase | null)[] | null;
-  readonly Clases?: Clases | null;
   readonly Users?: (ChatRoomClasesUser | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly chatRoomClasesClasesId?: string | null;
 }
 
 type LazyChatRoomClases = {
@@ -77,11 +117,9 @@ type LazyChatRoomClases = {
   readonly newMessages?: number | null;
   readonly image?: string | null;
   readonly MessagesClases: AsyncCollection<MessagesClase>;
-  readonly Clases: AsyncItem<Clases | undefined>;
   readonly Users: AsyncCollection<ChatRoomClasesUser>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly chatRoomClasesClasesId?: string | null;
 }
 
 export declare type ChatRoomClases = LazyLoading extends LazyLoadingDisabled ? EagerChatRoomClases : LazyChatRoomClases
@@ -140,8 +178,10 @@ type EagerClases = {
   readonly fechaPublicacion?: string | null;
   readonly ContenidoClases?: (ContenidoClases | null)[] | null;
   readonly moduloscursosID: string;
+  readonly ChatRoomClases?: ChatRoomClases | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly clasesChatRoomClasesId?: string | null;
 }
 
 type LazyClases = {
@@ -156,8 +196,10 @@ type LazyClases = {
   readonly fechaPublicacion?: string | null;
   readonly ContenidoClases: AsyncCollection<ContenidoClases>;
   readonly moduloscursosID: string;
+  readonly ChatRoomClases: AsyncItem<ChatRoomClases | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly clasesChatRoomClasesId?: string | null;
 }
 
 export declare type Clases = LazyLoading extends LazyLoadingDisabled ? EagerClases : LazyClases
@@ -178,6 +220,7 @@ type EagerModulosCursos = {
   readonly costoModulo?: number | null;
   readonly cursosID: string;
   readonly Clases?: (Clases | null)[] | null;
+  readonly Suscripciones?: (Suscripciones | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -194,6 +237,7 @@ type LazyModulosCursos = {
   readonly costoModulo?: number | null;
   readonly cursosID: string;
   readonly Clases: AsyncCollection<Clases>;
+  readonly Suscripciones: AsyncCollection<Suscripciones>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -257,6 +301,7 @@ type EagerUser = {
   readonly iniciacion?: IniciacionEnum | keyof typeof IniciacionEnum | null;
   readonly MessagesClases?: (MessagesClase | null)[] | null;
   readonly chatroomclasess?: (ChatRoomClasesUser | null)[] | null;
+  readonly SuscripcionesUser?: (Suscripciones | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -274,6 +319,7 @@ type LazyUser = {
   readonly iniciacion?: IniciacionEnum | keyof typeof IniciacionEnum | null;
   readonly MessagesClases: AsyncCollection<MessagesClase>;
   readonly chatroomclasess: AsyncCollection<ChatRoomClasesUser>;
+  readonly SuscripcionesUser: AsyncCollection<Suscripciones>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

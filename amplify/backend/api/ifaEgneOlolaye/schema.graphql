@@ -1,3 +1,18 @@
+enum TypeSuscripcion {
+  PAGO
+  INVITADO
+  PENDIENTE
+}
+
+type Suscripciones @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  status: String!
+  expiresAt: AWSDate!
+  type: TypeSuscripcion!
+  userID: ID! @index(name: "byUser")
+  moduloscursosID: ID! @index(name: "byModulosCursos")
+}
+
 type MessagesClase @model @auth(rules: [{allow: public}]) {
   id: ID!
   text: String
@@ -13,7 +28,6 @@ type ChatRoomClases @model @auth(rules: [{allow: public}]) {
   newMessages: Int
   image: String
   MessagesClases: [MessagesClase] @hasMany(indexName: "byChatRoomClases", fields: ["id"])
-  Clases: Clases @hasOne
   Users: [User] @manyToMany(relationName: "ChatRoomClasesUser")
 }
 
@@ -35,6 +49,7 @@ type Clases @model @auth(rules: [{allow: public}]) {
   fechaPublicacion: AWSDateTime
   ContenidoClases: [ContenidoClases] @hasMany(indexName: "byClases", fields: ["id"])
   moduloscursosID: ID! @index(name: "byModulosCursos")
+  ChatRoomClases: ChatRoomClases @hasOne
 }
 
 enum TradicionEnum {
@@ -55,6 +70,7 @@ type ModulosCursos @model @auth(rules: [{allow: public}]) {
   costoModulo: Float
   cursosID: ID! @index(name: "byCursos")
   Clases: [Clases] @hasMany(indexName: "byModulosCursos", fields: ["id"])
+  Suscripciones: [Suscripciones] @hasMany(indexName: "byModulosCursos", fields: ["id"])
 }
 
 type Cursos @model @auth(rules: [{allow: public}]) {
@@ -77,5 +93,6 @@ type User @model @auth(rules: [{allow: public}]) {
   iniciacion: IniciacionEnum
   MessagesClases: [MessagesClase] @hasMany(indexName: "byUser", fields: ["id"])
   chatroomclasess: [ChatRoomClases] @manyToMany(relationName: "ChatRoomClasesUser")
+  SuscripcionesUser: [Suscripciones] @hasMany(indexName: "byUser", fields: ["id"])
 }
  

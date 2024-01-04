@@ -1,36 +1,46 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { User } from '../../../src/models'
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import ListItemUsers from './ListItemUsers';
 import { Stack } from 'expo-router';
-
+// import { useAuthStore } from '../../store/AuthUserStore';
+import { useStoreContext } from '../../store/storeContext';
 const Usuarios = () => {
-const [users, setUsers] = useState<User[]>([]);
-const {user} = useAuthenticator((context) => [context.user]);
-const [userCount, setUserCount] = useState(0);
+// const store = useStoreContext()
+const [users, setUsers] = useState<User[]>();
 
-
-useEffect(() => {  
-  const sub =DataStore.observeQuery(User)
-  .subscribe(({ items }) => {
-   setUsers(items);
-   setUserCount(items.length);
+type Props = {
+detailUser: User
+}
+useEffect(() => {
+ 
+  const subscription = DataStore.observeQuery(User).subscribe(snapshot => {
+    const { items, isSynced } = snapshot;
+    //console.log(`[Snapshot] item count: ${items.length}, isSynced: ${isSynced}`);
+   // console.log((items))
+    setUsers(items)
   });
   return () => {
-    sub.unsubscribe();
-  };
+    subscription.unsubscribe()
+  }
 }, []);
 
-
+if (!users) {
+  return(
+    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+      <ActivityIndicator size="large" color="#5cdb3d" />
+    </View>
+  )
+}
   return (
     <>
     <Stack.Screen options={{
       title: 'Usuarios',
     }}/>
     <View>
-      <Text style={{fontWeight:'bold', marginLeft:10}}>{'Usuarios: ' + userCount}</Text>
+      <Text style={{fontWeight:'bold', marginLeft:10}}>{'Usuarios: ' + users.length}</Text>
       <FlatList
       data={users}
       renderItem={({item}) => (<ListItemUsers detailUser={item}/>)}

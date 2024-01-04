@@ -5,12 +5,12 @@ import { ActivityIndicator, Pressable, View, useColorScheme } from 'react-native
 import react,{ useEffect, useState } from 'react';
 import Colors from '../../constants/Colors';
 import {  DataStore } from 'aws-amplify/datastore';
-import { ExpoSQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/ExpoSQLiteAdapter';
-import { User } from '../../src/models';
 import { Octicons } from '@expo/vector-icons';
-import { useAuthStore } from '../store/AuthUserStore';
+// import { useAuthStore } from '../store/AuthUserStore';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { Hub } from 'aws-amplify/utils';
+import { useStoreContext } from '../store/storeContext';
+import { ModulosCursos, User } from '../../src/models';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -30,13 +30,12 @@ function TabBarIcon1(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  
+  const store = useStoreContext()
   const {user} = useAuthenticator((context) => [context.user]);
-  const setAuthUser = useAuthStore((state) => state.setAuthUser )
+  const [miModulos, setMiModulos] = useState<ModulosCursos[]>([])
 
   useEffect(() => { 
     const hubListenerCancel = Hub.listen('auth', (data) => {
-      
       if (data.payload.event === 'signedOut') {
         DataStore.clear();
         console.log('Data Cleared');
@@ -45,20 +44,31 @@ export default function TabLayout() {
     return () => {
       hubListenerCancel();
     }
-  }, [])
+  }, []) 
   
+  // useEffect(() => {
+  //   console.log('cargo el UseEffect de ObserveQuery User en Layout')
+  //   const subscription = DataStore.observeQuery(User).subscribe(snapshot => {
+  //     const { items, isSynced } = snapshot;
+  //     //console.log(`[Snapshot] item count: ${items.length}, isSynced: ${isSynced}`);
+  //    // console.log((items))
+  //     store.observeUsers(items)
+  //   });
+  //   return () => {
+  //    //  console.log('Se desmonto el UseEffect de ObserveQuery User en Layout')
+  //     subscription.unsubscribe()
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const sub = DataStore.observeQuery(User, c => c.id.eq(user?.userId)).subscribe(({ items }) => {
-    //  console.log(items)
-      if (items[0] === undefined) {
-        return (console.log('undefined'))
-      }
-    setAuthUser(items)
-    });
+    const subscriptio = DataStore.observeQuery(ModulosCursos ,(c) => c.Suscripciones.userID.eq(user.userId))
+    .subscribe(msg => {
+      setMiModulos(msg.items)
+    })
     return () => {
-      sub.unsubscribe();
-    };
-  }, []);
+      subscriptio.unsubscribe()
+    }
+}, [])
 
   return (
     <Tabs
@@ -69,7 +79,7 @@ export default function TabLayout() {
         name="index"
         options={{ 
           title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color } />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -87,8 +97,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+       
         name="two"
         options={{
+          headerShown: false,
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}

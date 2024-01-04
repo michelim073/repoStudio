@@ -1,13 +1,19 @@
 import { create } from 'zustand'
-import { User } from '../../src/models'
+import { User, Suscripciones } from '../../src/models'
 import { DataStore } from 'aws-amplify/datastore';
 import { signOut } from 'aws-amplify/auth';
-import { ActivityIndicator, Alert } from 'react-native';
 import { Redirect, router } from 'expo-router';
+import { getCurrentUser } from 'aws-amplify/auth';
+import { Alert } from 'react-native';
 
-
-type State = {
-  user: User[]
+interface AppState{
+  users: User[]
+  setAuthUser: (user: User[]) => void
+  observeUsers: (items:User[]) => void
+  userHooks: () => Promise<void>
+  id: string ,
+  userInfo: User[]
+  suscripciones: Suscripciones[]
 }
 
 const screenBloqueo = () =>
@@ -15,7 +21,7 @@ const screenBloqueo = () =>
      `Debe Hacer el pago de su suscripcion lo antes Posible`,
     [
       {text: 'OK', onPress: () =>{
-         router.replace({ pathname: `/screens/screenBloqueo` });
+         router.replace({ pathname: `/screens/screenBloqueo`});
       }},
     ]);
 
@@ -28,27 +34,37 @@ async function handleSignOut() {
 }
 
 
-type Actions = {
- setAuthUser: (usr: User[]) => void
-//   decrement: (qty: []) => void
-}
-
-export const useAuthStore = create<State & Actions>((set,get) => ({
-  user: [],
-  setAuthUser: (usr: User[]) =>{
-    if(usr.length === 0){
-      console.log('llega cero')
+const useAuthStore = create<AppState>((set,get) => ({
+  users: [],
+  userInfo: [],
+  suscripciones: [],
+  id: '',
+  userHooks: async () => {
+    try {
+      const { userId } = await getCurrentUser(); 
+       set((state) => ({ id: state.id = userId }))
+     } catch (err) {
+       console.log(err);
+     }
+  },
+  setAuthUser: (user) =>{
+    set((state) => ({ users: state.users = user }))
+    console.log('->',useAuthStore.getState().users)
+    if (useAuthStore.getState()?.users[0]?.roleUser === null || useAuthStore.getState()?.users[0]?.roleUser === undefined) {
       return
-      }
-  if(usr[0].roleUser === 'alerta'){
+    }else if (useAuthStore.getState().users[0].roleUser === 'f') {
       screenBloqueo()
-      }
-    set((state) => ({ user: state.user = usr  }))
-    // console.log('->',useAuthStore.getState().user)
+    }
   },
-  getAuthUser: () => {
-  
+  observeUsers: (items) => {
+     set((state) => ({ users: state.users = items }))
+    //  console.log(useAuthStore.getState().users )
   },
- 
+  suscripcionesUser: (sus:any) => {
+    set((state) => ({ suscripciones: state.suscripciones = sus }))
+    // console.log(useAuthStore.getState().suscripciones)
+  } ,
+
 //   decrement: (qty: []) => set((state) => ({ user: state.user = qty })),
 }))
+export default useAuthStore

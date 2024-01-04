@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
   chevron: {
     width: 24,
     height: 24,
+  
   },
 });

@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3ifaegneololayestoragece186d8a",
+  "bucketName": "ifaegneololaye-storage-ce186d8a",
+  "policyUUID": "b27382e4",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

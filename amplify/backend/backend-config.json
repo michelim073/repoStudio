@@ -140,5 +140,12 @@
         }
       ]
     }
+  },
+  "storage": {
+    "s3ifaegneololayestoragece186d8a": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
   }
 }
