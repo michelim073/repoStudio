@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, FlatList, Pressable, TextInput, Alert, Keyboard } from 'react-native'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import { Clases, ModulosCursos, ChatRoomClases } from '../../../src/models'
+import { Clases, ModulosCursos, ChatRoomClases, Suscripciones } from '../../../src/models'
 import { DataStore } from 'aws-amplify/datastore'
 import Accordion from '../../../app/componentes/accordion/Accordion';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { FontAwesome } from '@expo/vector-icons';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 type Props = {}
 
@@ -21,9 +22,10 @@ const Modulos = () => {
     const [idModulo, setIdModulo] = useState<any>()
     const bottomSheetRef = useRef<BottomSheet>(null);
     const bottomSheetRef1 = useRef<BottomSheet>(null);
-
+   
         const param = useLocalSearchParams();
        const id : any = param.id;
+       const { user} = useAuthenticator()
       
     useEffect(() => {
         const sub = DataStore.observeQuery(ModulosCursos, c => c.cursosID.eq(id))
@@ -31,11 +33,13 @@ const Modulos = () => {
                 setModulos(items);
                 setIndex(items.length + 1)
             });
+           
         return () => {
             sub.unsubscribe();
         };
     }, []);
-    
+
+
     const crearModulo = async () => {
       if (!nombre || !costo) {
         setError('Todos los campos son obligatorios')
@@ -130,6 +134,7 @@ const Modulos = () => {
      }, 500);
     }, [])
     const handleExpandPress = () => bottomSheetRef?.current?.expand();
+
     const handleExpandPress1 = useCallback((idm:string) => {
       bottomSheetRef1?.current?.expand()
       setIdModulo(idm)
@@ -139,7 +144,7 @@ const Modulos = () => {
     const snapPoints1 = useMemo(() => ["100%"], []);
     const handleSheetChanges = useCallback((index: number) => {
     }, [])
-    
+  
   return (
     <SafeAreaView style={styles.container}>
      <Stack.Screen options={{

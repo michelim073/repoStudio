@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Clases, ModulosCursos } from '../../../src/models';
+import { Clases, ModulosCursos, Suscripciones } from '../../../src/models';
 import { DataStore } from 'aws-amplify/datastore';
 import Animated, {
   useAnimatedRef,
@@ -14,11 +14,10 @@ import Animated, {
 import Chevron from './Chevron';
 import { Stack, router } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
-import { AntDesign, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import {FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ListTitleClase from './ListTitleClase';
-
-
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 
 type Props = {
@@ -30,9 +29,27 @@ type Props = {
 const Accordion = ({ value, deleteModuloAlert, handleExpandPress1 }: Props) => {
   const [clases, setClases] = useState<Clases[]>([]);
   const [auth, setAuth] = useState(true)
+  const [suscripcion, setSuscripcion] = useState<Suscripciones>()
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);
+const [suscrito, setSuscrito] = useState<boolean>(false)
   const open = useSharedValue(false);
+  const { user } = useAuthenticator()
+
+      useEffect(() => {
+      const sub = DataStore.observeQuery(Suscripciones, (c) => c.and(c => [
+        c.moduloscursosID.eq(value.id),
+        // c.userID.eq(user.userId)
+      ]))
+          .subscribe(({ items }) => {
+         setSuscripcion(items[0])     
+          });
+      return () => {
+          sub.unsubscribe();
+      };
+  }, [value]);
+  // console.log('suscription ->',suscripcion)
+ 
 
 
   useEffect(() => {
@@ -45,6 +62,12 @@ const Accordion = ({ value, deleteModuloAlert, handleExpandPress1 }: Props) => {
     };
   }, []);
 
+  useEffect(() => {
+  const resultado = suscripcion?.userID === user.userId
+  setSuscrito(resultado)
+  }, [suscripcion])
+  
+
   const progress = useDerivedValue(() =>
     open.value ? withTiming(1) : withTiming(0),
   );
@@ -53,7 +76,6 @@ const Accordion = ({ value, deleteModuloAlert, handleExpandPress1 }: Props) => {
     height: heightValue.value,
   }), [heightValue]);
   
-
   const renderLeftActions = (progress: any, dragX: any) => {
     const scale = dragX.interpolate({
       inputRange: [0, 100],
@@ -68,7 +90,7 @@ const Accordion = ({ value, deleteModuloAlert, handleExpandPress1 }: Props) => {
       </TouchableOpacity>
     )
   }
-
+  console.log(suscripcion)
   return (
     <>
     <Stack.Screen options={{ title: 'Modulos' }} />

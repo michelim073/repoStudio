@@ -23,11 +23,11 @@
           "location",
           "fetch"
         ],
-        "NSLocationDefaultAccuracyReduced":true,
+        "NSLocationDefaultAccuracyReduced": true,
         "NSLocationWhenInUseUsageDescription": "Esto es necesario para poder usar la ubicación en la aplicación.",
-        "NSLocationUsageDescription":"Allows App to use Face ID for a simpler sign in.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allows App to use location services in the foreground and background.",
-    }
+        "NSLocationUsageDescription": "Allows App to use Face ID for a simpler sign in.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allows App to use location services in the foreground and background."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -37,7 +37,11 @@
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
-        "ACCESS_BACKGROUND_LOCATION"],
+        "ACCESS_BACKGROUND_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
       "package": "com.anonymous.entrenamientoIfa"
     },
     "web": {
@@ -56,6 +60,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7eeeb7bb-dd91-4b16-8d8d-040737c55099"
+      }
     }
   }
 }

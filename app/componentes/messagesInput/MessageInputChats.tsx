@@ -22,6 +22,9 @@ import { uploadData } from 'aws-amplify/storage';
 import { DataStore } from "aws-amplify/datastore";
 import { MessagesClase } from "../../../src/models";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
+import { Recording } from "expo-av/build/Audio";
+import AudioPlayer from "../AudioPlayer";
+
 
       
       type Props = {
@@ -32,7 +35,8 @@ const MessageInputChats = (chatroomInfo: Props) => {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [recording, setRecording] = useState<Recording>();
+  const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [soundURI, setSoundURI] = useState<string | null>(null);
   const { user } = useAuthenticator()
 
@@ -43,7 +47,7 @@ const MessageInputChats = (chatroomInfo: Props) => {
         const libraryResponse =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
         const photoResponse = await ImagePicker.requestCameraPermissionsAsync();
-        await Audio.requestPermissionsAsync();
+        //  await requestPermission()
 
         if (
           libraryResponse.status !== "granted" ||
@@ -55,11 +59,49 @@ const MessageInputChats = (chatroomInfo: Props) => {
     })();
   }, []);
 
+  async function startRecording() {
+    try {
+      if (permissionResponse?.status !== 'granted') {
+        console.log('Requesting permission..', permissionResponse);
+        await requestPermission();
+      }
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      console.log('Starting recording..');
+      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
+      setRecording(recording);
+      console.log('Recording started');
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  }
+
+  async function stopRecording() {
+    if (!recording) {
+      return
+    }
+    console.log('Stopping recording..');
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync(
+      {
+        allowsRecordingIOS: false,
+      }
+    );
+    const uri = recording.getURI();
+    setSoundURI(uri)
+    console.log('Recording stopped and stored at', uri);
+  }
+
   const onPress = () => {
     if (image) {
       sendImage()
     } else if (soundURI) {
-      // sendAudio();
+       sendAudio();
     } else if (message) {
        sendMessage();
     } else {
@@ -72,7 +114,6 @@ const MessageInputChats = (chatroomInfo: Props) => {
     setImage(null);
     setProgress(0);
     setSoundURI(null);
-
   };
 
     // Image picker
@@ -135,6 +176,33 @@ const MessageInputChats = (chatroomInfo: Props) => {
     const progressCallback = (progress:any) => {
       setProgress(progress.loaded / progress.total);
     };
+
+    const sendAudio = async () => {
+      if (!soundURI) {
+        return;
+      }
+      try {
+      const uriParts = soundURI.split(".");
+      const extenstion = uriParts[uriParts.length - 1];
+      const blob = await getBlob(soundURI);
+      const result = await uploadData({
+        key: `${uuidv4()}.${extenstion}`,
+        data: blob
+      }).result
+         console.log('Succeesded ', result)
+
+         await DataStore.save(
+          new MessagesClase({
+           text: message,
+           audio: result?.key,
+          userID: user?.userId,
+          chatroomclasesID: chatroomInfo.chatroomInfo,
+        })
+      )
+      resetFields()
+      } catch (error) {
+        console.log(error)
+      }}
 
     const sendMessage = async() =>{
         if (!message) {
@@ -226,7 +294,7 @@ const MessageInputChats = (chatroomInfo: Props) => {
       </View>
     )} */}
 
-      {/* {soundURI && <AudioPlayer soundURI={soundURI} />} */}
+      {soundURI && <AudioPlayer soundURI={soundURI} />}
 
       <View style={styles.row}>
         <View style={styles.inputContainer}>
@@ -264,7 +332,7 @@ const MessageInputChats = (chatroomInfo: Props) => {
             />
           </Pressable>
 
-          <Pressable>
+          <Pressable onPress={recording ? stopRecording : startRecording}>
             <MaterialCommunityIcons
               name={recording ? "microphone" : "microphone-outline"}
               size={24}

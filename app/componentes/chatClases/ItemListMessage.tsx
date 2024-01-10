@@ -12,6 +12,7 @@ import { useStoreContext } from "../../store/storeContext";
 import { DataStore } from "aws-amplify/datastore";
 import { getUrl } from "aws-amplify/storage";
 import {format, toDate} from 'date-fns'
+import AudioPlayer from "../AudioPlayer";
 
 type Props = {
   item: MessagesClase;
@@ -20,6 +21,7 @@ type Props = {
 const ItemListMessage = (props: Props) => {
   const store = useStoreContext();
   const { item } = props;
+  const [soundURI, setSoundUri] = useState<string>()
   const [imageUrl, setImageUrl] = useState<string>()
   const [userMessage, setUserMessage] = useState<User>();
  
@@ -39,11 +41,25 @@ const ItemListMessage = (props: Props) => {
     })
     setImageUrl(res?.url?.href)
   }
+  const getSoundUri = async () =>{
+    const res = await getUrl({
+      key:`${item.audio}`,
+    })
+    setSoundUri(res?.url?.href)
+  }
+
 useEffect(() => {
   if (item.imagen) {
    getImageUrl()
   }
 }, [item.imagen]);
+
+useEffect(() => {
+  if (item.audio) {
+    getSoundUri()
+  }
+}, [])
+
   
   if (!item) {
     return 
@@ -57,7 +73,7 @@ useEffect(() => {
         <View style={{ flexDirection: "row" }}>
         
          <Image
-            source={userMessage?.imageUser === null ? require("../../../assets/images/useri.png") : {uri:userMessage?.imageUser}}
+            source={userMessage?.imageUser === null ? require("../../../assets/images/avatar.png") : {uri:userMessage?.imageUser}}
             style={{ width: 45, height: 45, borderRadius: 25 }}
           />
           <View style={styles.rightContainer}>
@@ -69,6 +85,7 @@ useEffect(() => {
             source={{uri:imageUrl}}
             style={{ width: '100%', aspectRatio:1/1}}
           />}
+           {soundURI && <AudioPlayer soundURI={soundURI} />}
           {item.text && <Text>{item?.text}</Text>}
           
              <View style={{alignSelf:'flex-end', marginRight:1}}>

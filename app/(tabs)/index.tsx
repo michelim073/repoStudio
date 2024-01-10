@@ -1,23 +1,29 @@
 import { StyleSheet } from 'react-native';
-
+import { WebView } from 'react-native-webview';
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
+import React from 'react';
+import YoutubeView from '../componentes/youtube/YoutubeView';
 
 export default function TabOneScreen() {
+
+
+
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      
+        <Text>Aqui</Text>
+        <YoutubeView/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex:1,
+    backgroundColor:'violet',
   },
   title: {
     fontSize: 20,
