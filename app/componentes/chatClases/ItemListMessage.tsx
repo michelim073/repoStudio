@@ -73,8 +73,8 @@ useEffect(() => {
         <View style={{ flexDirection: "row" }}>
         
          <Image
-            source={userMessage?.imageUser === null ? require("../../../assets/images/avatar.png") : {uri:userMessage?.imageUser}}
-            style={{ width: 45, height: 45, borderRadius: 25 }}
+            source={userMessage?.imageUser === null ? require("../../../assets/images/user.png") : {uri:userMessage?.imageUser}}
+            style={{ width: 40, height: 40, borderRadius: 20 }}
           />
           <View style={styles.rightContainer}>
             <View>
@@ -107,14 +107,14 @@ export default ItemListMessage;
 const styles = StyleSheet.create({
   container: {
     
-    backgroundColor:'white'
+   
   },
   rightContainer:{
    padding:3,
     marginLeft:8, 
-     backgroundColor: "#f2f2f2",
+    backgroundColor:'white',
      maxWidth:'80%',
-     borderRadius:10
+     borderRadius:7
   }, 
   textName:{
     fontSize:16,

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, ImageBackground, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ChatRoomClases, MessagesClase } from '../../../src/models'
 import { DataStore, SortDirection } from 'aws-amplify/datastore'
@@ -13,7 +13,7 @@ type Props = {}
 const ChatsClases = (props: Props) => {
   const param:any = useLocalSearchParams();
   const [messages, setMessages] = useState<MessagesClase[]>([]);
-  
+  const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
   //console.log(param)
 
   useEffect(() => {
@@ -28,16 +28,30 @@ const ChatsClases = (props: Props) => {
 }, [])
 
   return (
-    <View style={styles.container}> 
-    <Stack.Screen options={{title: `Chats Clase`}}/>
+
+    <View style={{flex:1}}>
+   
+     <Stack.Screen options={{title: `Chats Clase`}}/>
+   
+        <KeyboardAvoidingView style={styles.container}
+       
+    behavior={Platform.OS === "ios" ? "padding" : undefined}
+    keyboardVerticalOffset={100}
+    >  
+     <ImageBackground style={{flex:1}}resizeMode='cover' source={require('../../../assets/images/BG.png')}>
       <FlatList
-        contentContainerStyle={{gap:5, marginHorizontal:20}}
+        contentContainerStyle={{gap:5, marginHorizontal:20, paddingBottom:10}}
         data={messages}
         renderItem={({ item }) => (<ItemListMessage item={item}/>)}
         showsVerticalScrollIndicator={false}
+        automaticallyAdjustContentInsets
       /> 
+  </ImageBackground>
       <MessageInputChats chatroomInfo = {param?.chatRoom}/>
-    </View>
+    </KeyboardAvoidingView>
+    
+</View>
+
   )
 }
 

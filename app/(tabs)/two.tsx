@@ -5,7 +5,7 @@ import { Text, View } from '../../components/Themed';
 import MenuAnimado from '../screens/menus/MenuAnimado';
 import { useEffect, useState } from 'react';
 import { Cursos, ModulosCursos, User } from '../../src/models';
-import  useri  from '../../assets/images/useri.png';
+
 import { useStoreContext } from '../store/storeContext';
 import { Stack } from 'expo-router';
 import ComponentLocation from '../componentes/ComponentLocation';
@@ -52,7 +52,7 @@ if (!userAuth) {
      <View style={styles.contenedorMap}>
     <ComponentLocation/>
     </View >
-      <Image source={userAuth?.imageUser === null || undefined ? require("../../assets/images/avatar.png") : {uri:userAuth?.imageUser}} 
+      <Image source={userAuth?.imageUser === null || undefined ? require("../../assets/images/user.png") : {uri:userAuth?.imageUser}} 
       style={styles.imageUser} />
        <View style={{marginTop:25,
        backgroundColor:'white',
@@ -63,7 +63,7 @@ if (!userAuth) {
      <Text style={{fontSize:20, fontWeight:'bold', marginHorizontal:20}}>Datos Personales</Text>
       <View style={{alignItems:'center'}}>
         <FontAwesome onPress={signOut} name="sign-out" size={24} color="rgb(236, 77, 45)" />
-        <Text style={{fontWeight:'bold', fontSize:12, color:"rgb(236, 77, 45)" }}>SingOut</Text>
+        <Text style={{fontWeight:'bold', fontSize:12, color:"rgb(236, 77, 45)" }}>Sign-Out</Text>
       </View>
      </View>
      <View>

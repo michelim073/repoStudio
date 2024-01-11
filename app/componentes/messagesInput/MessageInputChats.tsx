@@ -15,7 +15,8 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Text
+  Text,
+  ImageBackground
 } from "react-native";
 import { Audio, AVPlaybackStatus } from "expo-av";
 import { uploadData } from 'aws-amplify/storage';
@@ -229,11 +230,9 @@ const MessageInputChats = (chatroomInfo: Props) => {
     }
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.root, { height: "auto" }]}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={100}
-    >
+ 
+    <ImageBackground style={{paddingBottom:10, paddingHorizontal:10, paddingTop:5}} source={require('../../../assets/images/BG.png')}>
+       
       {/* {messageReplyTo && (
       <View
         style={{
@@ -310,6 +309,7 @@ const MessageInputChats = (chatroomInfo: Props) => {
           <TextInput
             style={styles.input}
             value={message}
+            multiline={true}
             onChangeText={setMessage}
             placeholder="Chat message..."
           />
@@ -350,7 +350,9 @@ const MessageInputChats = (chatroomInfo: Props) => {
           )}
         </Pressable>
       </View>
-    </KeyboardAvoidingView>
+     
+    </ImageBackground>
+    
   );
 };
 
@@ -358,7 +360,7 @@ export default MessageInputChats;
 
 const styles = StyleSheet.create({
   root: {
-    padding: 10,
+ 
   },
   row: {
     flexDirection: "row",
@@ -367,12 +369,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     flex: 1,
     marginRight: 10,
-    borderRadius: 25,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#dedede",
     alignItems: "center",
     flexDirection: "row",
-    padding: 5,
+    padding: 10,
   },
   input: {
     flex: 1,
