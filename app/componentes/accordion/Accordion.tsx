@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ScrollView, FlatList } from 'react-native';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Clases, ModulosCursos, Suscripciones } from '../../../src/models';
 import { DataStore } from 'aws-amplify/datastore';
 import Animated, {
@@ -12,10 +12,9 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Chevron from './Chevron';
-import { Stack, router } from 'expo-router';
+import { Stack } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
 import {FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import BottomSheet from '@gorhom/bottom-sheet';
 import ListTitleClase from './ListTitleClase';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
@@ -32,7 +31,7 @@ const Accordion = ({ value, deleteModuloAlert, handleExpandPress1 }: Props) => {
   const [suscripcion, setSuscripcion] = useState<Suscripciones>()
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);
-const [suscrito, setSuscrito] = useState<boolean>(false)
+const [suscrito, setSuscrito] = useState<boolean>()
   const open = useSharedValue(false);
   const { user } = useAuthenticator()
 
@@ -42,16 +41,15 @@ const [suscrito, setSuscrito] = useState<boolean>(false)
         // c.userID.eq(user.userId)
       ]))
           .subscribe(({ items }) => {
-         setSuscripcion(items[0])     
+            console.log(items[0])
+            const resultado = items[0]?.userID === user.userId
+              setSuscrito(resultado)     
           });
       return () => {
           sub.unsubscribe();
       };
   }, [value]);
-  // console.log('suscription ->',suscripcion)
- 
-
-
+  
   useEffect(() => {
     const sub = DataStore.observeQuery(Clases, c => c.moduloscursosID.eq(value.id))
       .subscribe(({ items }) => {
@@ -61,12 +59,6 @@ const [suscrito, setSuscrito] = useState<boolean>(false)
       sub.unsubscribe();
     };
   }, []);
-
-  useEffect(() => {
-  const resultado = suscripcion?.userID === user.userId
-  setSuscrito(resultado)
-  }, [suscripcion])
-  
 
   const progress = useDerivedValue(() =>
     open.value ? withTiming(1) : withTiming(0),
@@ -90,7 +82,7 @@ const [suscrito, setSuscrito] = useState<boolean>(false)
       </TouchableOpacity>
     )
   }
-  console.log(suscripcion)
+ 
   return (
     <>
     <Stack.Screen options={{ title: 'Modulos' }} />
@@ -105,13 +97,18 @@ const [suscrito, setSuscrito] = useState<boolean>(false)
             <View style={styles.encabezado}>
               <View style={{flexDirection:'row', justifyContent:'space-between'}}>
               <Text style={{ fontWeight: '900', fontSize: 16, color: '#488a2b' }}>{value.nombre}</Text>
-              <MaterialIcons onPress={()=>handleExpandPress1(value.id)} name="my-library-add" size={24} color="gray" style={{marginRight:10, paddingTop:5 }}/>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <Text style={{fontWeight:'900', color:'gray', marginRight:3}}>Clase</Text>
+                 <MaterialIcons onPress={()=>handleExpandPress1(value.id)} name="my-library-add" size={24} color="gray" style={{marginRight:10, paddingTop:5 }}/>
+                 
+              </View>
+             
               {/* <AntDesign name="addfile" size={24} color="gray" style={{marginRight:10, paddingTop:5 }} /> */}
               </View>
               <Text style={{}}>{`Costo: ${value.costoModulo}$`}</Text>
               <Text style={{}}>{`Modulo: ${value.index}`}</Text>
             </View>
-            <Pressable disabled={!auth}
+            <Pressable disabled={!suscrito}
               onPress={() => {
                 if (heightValue.value === 0) {
                   runOnUI(() => {
@@ -128,8 +125,9 @@ const [suscrito, setSuscrito] = useState<boolean>(false)
               }}
               style={styles.titleContainer}>
               {/* <Text style={styles.textTitle}>{value.nombre}</Text> */}
-              <Text>SUSCRITO</Text>
-
+              <View style={{backgroundColor: suscrito ? '#23bd59':  '#bd3723', padding:3, borderRadius:5}}>
+                <Text style={{fontWeight:'900', color:'#FFFF'}}>{suscrito ? 'Suscrito' : 'Suscribete'}</Text>
+              </View>
               <Chevron progress={progress} />
             </Pressable>
             <Animated.View style={heightAnimationStyle}>
@@ -139,7 +137,6 @@ const [suscrito, setSuscrito] = useState<boolean>(false)
                 data={clases}
                 renderItem={({item}) =>  <ListTitleClase clasesTitle={item} />}
                 />
-         
                 }
               </Animated.View>
             </Animated.View>
@@ -177,7 +174,6 @@ const styles = StyleSheet.create({
     width: '100%',
     top: 0,
   },
-
   encabezado: {
     marginHorizontal: 10,
   },

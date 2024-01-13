@@ -46,19 +46,19 @@ export default function TabLayout() {
     }
   }, []) 
   
-  // useEffect(() => {
-  //   console.log('cargo el UseEffect de ObserveQuery User en Layout')
-  //   const subscription = DataStore.observeQuery(User).subscribe(snapshot => {
-  //     const { items, isSynced } = snapshot;
-  //     //console.log(`[Snapshot] item count: ${items.length}, isSynced: ${isSynced}`);
-  //    // console.log((items))
-  //     store.observeUsers(items)
-  //   });
-  //   return () => {
-  //    //  console.log('Se desmonto el UseEffect de ObserveQuery User en Layout')
-  //     subscription.unsubscribe()
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log('cargo el UseEffect de ObserveQuery User en Layout')
+    const subscription = DataStore.observeQuery(User).subscribe(snapshot => {
+      const { items, isSynced } = snapshot;
+      //console.log(`[Snapshot] item count: ${items.length}, isSynced: ${isSynced}`);
+     // console.log((items))
+      store.observeUsers(items)
+    });
+    return () => {
+     //  console.log('Se desmonto el UseEffect de ObserveQuery User en Layout')
+      subscription.unsubscribe()
+    }
+  }, []);
 
   useEffect(() => {
     const subscriptio = DataStore.observeQuery(ModulosCursos ,(c) => c.Suscripciones.userID.eq(user.userId))

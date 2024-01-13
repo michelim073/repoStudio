@@ -60,10 +60,10 @@ const useAuthStore = create<AppState>((set,get) => ({
      set((state) => ({ users: state.users = items }))
     //  console.log(useAuthStore.getState().users )
   },
-  suscripcionesUser: (sus:any) => {
-    set((state) => ({ suscripciones: state.suscripciones = sus }))
-    // console.log(useAuthStore.getState().suscripciones)
-  } ,
+  // suscripcionesUser: (sus:any) => {
+  //   set((state) => ({ suscripciones: state.suscripciones = sus }))
+  //   // console.log(useAuthStore.getState().suscripciones)
+  // } ,
 
 //   decrement: (qty: []) => set((state) => ({ user: state.user = qty })),
 }))

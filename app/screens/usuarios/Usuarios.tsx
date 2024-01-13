@@ -8,26 +8,25 @@ import { Stack } from 'expo-router';
 // import { useAuthStore } from '../../store/AuthUserStore';
 import { useStoreContext } from '../../store/storeContext';
 const Usuarios = () => {
-// const store = useStoreContext()
-const [users, setUsers] = useState<User[]>();
+ const store = useStoreContext()
+// const [users, setUsers] = useState<User[]>(store?.users);
 
 type Props = {
 detailUser: User
 }
-useEffect(() => {
- 
-  const subscription = DataStore.observeQuery(User).subscribe(snapshot => {
-    const { items, isSynced } = snapshot;
-    //console.log(`[Snapshot] item count: ${items.length}, isSynced: ${isSynced}`);
-   // console.log((items))
-    setUsers(items)
-  });
-  return () => {
-    subscription.unsubscribe()
-  }
-}, []);
+// useEffect(() => {
+//   const subscription = DataStore.observeQuery(User).subscribe(snapshot => {
+//     const { items, isSynced } = snapshot;
+//     //console.log(`[Snapshot] item count: ${items.length}, isSynced: ${isSynced}`);
+//    // console.log((items))
+//     setUsers(items)
+//   });
+//   return () => {
+//     subscription.unsubscribe()
+//   }
+// }, []);
 
-if (!users) {
+if (!store?.users) {
   return(
     <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
       <ActivityIndicator size="large" color="#5cdb3d" />
@@ -40,9 +39,9 @@ if (!users) {
       title: 'Usuarios',
     }}/>
     <View>
-      <Text style={{fontWeight:'bold', marginLeft:10}}>{'Usuarios: ' + users.length}</Text>
+      <Text style={{fontWeight:'bold', marginLeft:10}}>{'Usuarios: ' + store?.users.length}</Text>
       <FlatList
-      data={users}
+      data={store?.users}
       renderItem={({item}) => (<ListItemUsers detailUser={item}/>)}
       contentContainerStyle={{gap: 5, paddingTop:10}}
     

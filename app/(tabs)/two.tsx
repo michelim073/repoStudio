@@ -12,32 +12,23 @@ import ComponentLocation from '../componentes/ComponentLocation';
 import { FontAwesome } from '@expo/vector-icons';
 import { DataStore } from 'aws-amplify/datastore';
 
-
-
-
-
 export default function TabTwoScreen() {
-const store = useStoreContext()
+// const store = useStoreContext()
   const {signOut, user} = useAuthenticator((context) => [context.user]);
   // const usr = useAuthStore((state) => state.users)
   // const observer = useAuthStore((state) => state.observeUsers)
   const [miModulos, setMiModulos] = useState<ModulosCursos[]>([])
   const [userAuth, setUserAuth] = useState<User>();
 
-
   useEffect(() => {
     const subscription = DataStore.observeQuery(User, c => c.id.eq(user.userId)).subscribe(snapshot => {
       const { items, isSynced } = snapshot;
       setUserAuth(items[0])
-     store.setAuthUser(items)
     });
     return () => {
       subscription.unsubscribe()
     }
   }, []);
-
-
-  
 if (!userAuth) { 
   return 
    ( 
