@@ -12,7 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Chevron from './Chevron';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
 import {FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import ListTitleClase from './ListTitleClase';
@@ -28,7 +28,7 @@ type Props = {
 const Accordion = ({ value, deleteModuloAlert, handleExpandPress1 }: Props) => {
   const [clases, setClases] = useState<Clases[]>([]);
   const [auth, setAuth] = useState(true)
-  const [suscripcion, setSuscripcion] = useState<Suscripciones>()
+  const [suscripciones, setSuscripciones] = useState<Suscripciones|undefined>()
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);
 const [suscrito, setSuscrito] = useState<boolean>()
@@ -38,12 +38,15 @@ const [suscrito, setSuscrito] = useState<boolean>()
       useEffect(() => {
       const sub = DataStore.observeQuery(Suscripciones, (c) => c.and(c => [
         c.moduloscursosID.eq(value.id),
-        // c.userID.eq(user.userId)
-      ]))
-          .subscribe(({ items }) => {
-            console.log(items[0])
-            const resultado = items[0]?.userID === user.userId
-              setSuscrito(resultado)     
+        c.userID.eq(user.userId)
+      ])).subscribe(({ items }) => {
+            // const resultado = items[0]?.userID === user.userId
+            console.log(items)
+            const bus = items.map((i) =>{
+             const r = i.userID === user.userId 
+             console.log(r)
+             setSuscrito(r)
+            })
           });
       return () => {
           sub.unsubscribe();
@@ -82,7 +85,10 @@ const [suscrito, setSuscrito] = useState<boolean>()
       </TouchableOpacity>
     )
   }
- 
+
+  const agregarUsusario = () =>{
+      router.push({ pathname: `/screens/suscriptions/suscriptionScreen`, params: { susId: value.id} })
+  }
   return (
     <>
     <Stack.Screen options={{ title: 'Modulos' }} />
@@ -95,14 +101,18 @@ const [suscrito, setSuscrito] = useState<boolean>()
           <View style={styles.container}>
             
             <View style={styles.encabezado}>
+              <View style={{flexDirection:'row', padding:3,}}>
+                 <FontAwesome name='user-plus' size={24} color={'gray'} onPress={agregarUsusario}/> 
+                  {/* <Text style={{ marginLeft:3, fontWeight:'900', color:'gray'}}>Agregar Usuario</Text> */}
+              </View>
+             
               <View style={{flexDirection:'row', justifyContent:'space-between'}}>
               <Text style={{ fontWeight: '900', fontSize: 16, color: '#488a2b' }}>{value.nombre}</Text>
               <View style={{flexDirection:'row', alignItems:'center'}}>
+             
                 <Text style={{fontWeight:'900', color:'gray', marginRight:3}}>Clase</Text>
                  <MaterialIcons onPress={()=>handleExpandPress1(value.id)} name="my-library-add" size={24} color="gray" style={{marginRight:10, paddingTop:5 }}/>
-                 
               </View>
-             
               {/* <AntDesign name="addfile" size={24} color="gray" style={{marginRight:10, paddingTop:5 }} /> */}
               </View>
               <Text style={{}}>{`Costo: ${value.costoModulo}$`}</Text>

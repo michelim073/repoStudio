@@ -5,9 +5,7 @@ import { Text, View } from '../../components/Themed';
 import MenuAnimado from '../screens/menus/MenuAnimado';
 import { useEffect, useState } from 'react';
 import { Cursos, ModulosCursos, User } from '../../src/models';
-
 import { useStoreContext } from '../store/storeContext';
-import { Stack } from 'expo-router';
 import ComponentLocation from '../componentes/ComponentLocation';
 import { FontAwesome } from '@expo/vector-icons';
 import { DataStore } from 'aws-amplify/datastore';
@@ -83,12 +81,8 @@ if (!userAuth) {
           
           </>
         </View>
-      
       </View>
      </View>
-  
-     
-    
     </View>
   )
 }

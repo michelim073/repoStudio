@@ -17,13 +17,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "expiresAt": {
-                    "name": "expiresAt",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "type": {
                     "name": "type",
                     "isArray": false,
@@ -1057,5 +1050,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ba6aaf71552983badf844a8b67f82829"
+    "version": "4caf458226a0783f5821b16d9b9b94fe"
 };

@@ -27,7 +27,6 @@ type EagerSuscripciones = {
   };
   readonly id: string;
   readonly status: string;
-  readonly expiresAt: string;
   readonly type: TypeSuscripcion | keyof typeof TypeSuscripcion;
   readonly userID: string;
   readonly moduloscursosID: string;
@@ -42,7 +41,6 @@ type LazySuscripciones = {
   };
   readonly id: string;
   readonly status: string;
-  readonly expiresAt: string;
   readonly type: TypeSuscripcion | keyof typeof TypeSuscripcion;
   readonly userID: string;
   readonly moduloscursosID: string;

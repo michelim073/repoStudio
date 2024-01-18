@@ -33,6 +33,9 @@
       "api": {
         "StripeWebhook": {},
         "ifaEgneOlolaye": {}
+      },
+      "storage": {
+        "s3ifaegneololayestoragece186d8a": {}
       }
     }
   }
